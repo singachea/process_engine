@@ -1,0 +1,46 @@
+%h2 Process Instance <em>#{@process_instance.id}</em>
+
+%p
+  = link_to "Process Definition", process_engine_process_definition_path(@process_instance.process_definition_id), class: "btn btn-default btn-sm"
+  = link_to "Process Instances", process_engine_process_definition_process_instances_path(@process_instance.process_definition_id), class: "btn btn-default btn-sm"
+  = link_to "Edit", edit_process_engine_process_instance_path(@process_instance), class: "btn btn-primary btn-sm"
+
+%p
+  %strong ID:
+  = @process_instance.id
+
+%p
+  %strong Status:
+  = @process_instance.status
+%p
+  %strong State:
+  = @process_instance.states
+%p
+  %strong Creator:
+  = @process_instance.creator
+%p
+  %strong Created:
+  = @process_instance.created_at
+%p
+  %strong Updated:
+  = @process_instance.updated_at
+
+%p
+  %strong Process Tasks:
+  = link_to 'Process Tasks', process_engine_process_instance_process_tasks_path(@process_instance), class: "btn btn-default btn-sm"
+
+
+#canvas{ style: "height: 500px; padding: 0px"}
+
+%script{ src: '/assets/jquery-mousewheel/jquery.mousewheel.js' }
+%script{ src: '/assets/lodash/dist/lodash.js' }
+%script{ src: '/assets/sax/lib/sax.js' }
+%script{ src: '/assets/Snap.svg/dist/snap.svg.js' }
+%script{ src: '/assets/bpmn-js/dist/bpmn-viewer.js' }
+
+%script{ src: '/assets/bpmn.loader.js' }
+
+:javascript
+  var bpmn_url = "/process_engine/process_definitions/#{@process_instance.process_definition_id}/bpmn_xml";
+  var currentStates = #{@process_instance.states.to_json};
+  loadBMPNViewer(bpmn_url, currentStates, window.BpmnJS, window.jQuery)

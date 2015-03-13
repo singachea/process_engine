@@ -1,0 +1,6 @@
+= simple_form_for [ @definition] do |f|
+  = f.input :name
+  = f.input :slug
+  = f.input :description
+  = f.input :bpmn_xml, as: :text, input_html: { style: "height: 300px"}
+  = f.submit class: 'btn btn-primary'

@@ -1,0 +1,5 @@
+= simple_form_for [ @process_instance] do |f|
+  = f.input :status, collection: ProcessEngine::ProcessInstance.statuses.keys, include_blank: false
+  = f.input :states
+  = f.input :creator
+  = f.submit class: 'btn btn-primary'

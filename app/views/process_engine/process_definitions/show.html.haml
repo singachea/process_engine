@@ -1,0 +1,58 @@
+%h2 Process Definition <em>#{@definition.name}</em>
+
+%p= link_to "Edit", edit_process_engine_process_definition_path(@definition), class: "btn btn-primary btn-sm"
+
+%p
+  %strong ID:
+  = @definition.id
+
+%p
+  %strong Name:
+  = @definition.name
+%p
+  %strong Slug:
+  = @definition.slug
+%p
+  %strong Starting Node:
+  = @definition.starting_node
+%p
+  %strong Created:
+  = @definition.created_at
+%p
+  %strong Updated:
+  = @definition.updated_at
+%p
+  %strong Description:
+  = @definition.description
+
+%p
+  %strong Process Instances:
+  = link_to 'Process Instances', process_engine_process_definition_process_instances_path(@definition), class: "btn btn-default btn-sm"
+
+%p
+  %strong Start New Process Instance:
+  = link_to 'Start New Process Instance', start_new_process_instance_process_engine_process_definition_path(@definition), method: :post, class: "btn btn-warning btn-sm"
+
+#canvas{ style: "height: 500px; padding: 0px"}
+
+%p
+  %strong BPMN XML:
+  %pre= @definition.bpmn_xml.try(:truncate, 300)
+
+%p
+  %strong BMPN JSON:
+  %pre= JSON.pretty_generate(@definition.bpmn_json)
+
+
+
+%script{ src: '/assets/jquery-mousewheel/jquery.mousewheel.js' }
+%script{ src: '/assets/lodash/dist/lodash.js' }
+%script{ src: '/assets/sax/lib/sax.js' }
+%script{ src: '/assets/Snap.svg/dist/snap.svg.js' }
+%script{ src: '/assets/bpmn-js/dist/bpmn-viewer.js' }
+
+%script{ src: '/assets/bpmn.loader.js' }
+
+:javascript
+  var bpmn_url = "/process_engine/process_definitions/#{@definition.id}/bpmn_xml";
+  loadBMPNViewer(bpmn_url, [], window.BpmnJS, window.jQuery)

@@ -1,0 +1,53 @@
+%h2
+  List of Process Tasks of
+  = link_to @process_instance.id, process_engine_process_instance_path(@process_instance), class: "btn btn-default btn-sm"
+
+%table.table.table-striped.table-bordered
+  %tr
+    %th ID
+    %th Assignee
+    %th Candidate Users
+    %th Candidate Groups
+    %th status
+    %th state
+    %th data
+    %th finisher
+    %th Created
+    %th Updated
+    %th Action
+
+  - @process_tasks.each do |process_task|
+    %tr
+      -# %td= link_to process_task.id, process_engine_process_task_path(process_task)
+      %td= process_task.id
+      %td= process_task.assignee
+      %td= process_task.candidate_users
+      %td= process_task.candidate_groups
+      %td= process_task.status
+      %td= process_task.state
+      %td= process_task.data
+      %td= process_task.finisher
+      %td= process_task.created_at
+      %td= process_task.updated_at
+      %td
+        - unless process_task.finished?
+          = link_to 'Finish', finish_process_engine_process_task_path(process_task), class: "btn btn-warning btn-sm", method: :put, data: {confirm: "Are you sure?"}
+        -# = link_to 'Edit', edit_process_engine_process_instance_path(process_instance), class: "btn btn-primary btn-sm"
+        -# = link_to 'Remove', process_engine_process_instance_path(process_instance), class: "btn btn-danger btn-sm", method: :delete, data: {confirm: "Are you sure?"}
+
+= will_paginate @process_tasks
+
+#canvas{ style: "height: 500px; padding: 0px"}
+
+%script{ src: '/assets/jquery-mousewheel/jquery.mousewheel.js' }
+%script{ src: '/assets/lodash/dist/lodash.js' }
+%script{ src: '/assets/sax/lib/sax.js' }
+%script{ src: '/assets/Snap.svg/dist/snap.svg.js' }
+%script{ src: '/assets/bpmn-js/dist/bpmn-viewer.js' }
+
+%script{ src: '/assets/bpmn.loader.js' }
+
+:javascript
+  var bpmn_url = "/process_engine/process_definitions/#{@process_instance.process_definition_id}/bpmn_xml";
+  var currentStates = #{@process_instance.states.to_json};
+  loadBMPNViewer(bpmn_url, currentStates, window.BpmnJS, window.jQuery)

@@ -1,0 +1,11 @@
+!!!
+%html
+%head
+  %title BMPN Engine
+  = stylesheet_link_tag    'process_engine/application', media: 'all'
+  = javascript_include_tag 'process_engine/application'
+  = csrf_meta_tags
+%body
+  = render 'process_engine/layouts/menu'
+  .container
+    = yield
