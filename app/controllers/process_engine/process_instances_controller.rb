@@ -14,7 +14,7 @@ class ProcessEngine::ProcessInstancesController < ProcessEngine::ApplicationCont
 
   def update
     if @process_instance.update(process_instance_params)
-      redirect_to process_engine_process_instance_path(@process_instance)
+      redirect_to process_instance_path(@process_instance)
     else
       render :edit
     end
@@ -23,13 +23,13 @@ class ProcessEngine::ProcessInstancesController < ProcessEngine::ApplicationCont
   def destroy
     definition_id = @process_instance.process_definition_id
     @process_instance.destroy
-    redirect_to process_engine_process_definition_process_instances_path(definition_id)
+    redirect_to process_definition_process_instances_path(definition_id)
   end
 
   private
 
   def process_instance_params
-    params.require(:process_engine_process_instance).permit(:status, :state, :creator)
+    params.require(:process_instance).permit(:status, :state, :creator)
   end
 
   def set_process_definition

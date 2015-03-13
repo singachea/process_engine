@@ -1,6 +1,6 @@
 %h2
   List of Process Tasks of
-  = link_to @process_instance.id, process_engine_process_instance_path(@process_instance), class: "btn btn-default btn-sm"
+  = link_to @process_instance.id, process_instance_path(@process_instance), class: "btn btn-default btn-sm"
 
 %table.table.table-striped.table-bordered
   %tr
@@ -18,7 +18,7 @@
 
   - @process_tasks.each do |process_task|
     %tr
-      -# %td= link_to process_task.id, process_engine_process_task_path(process_task)
+      -# %td= link_to process_task.id, process_task_path(process_task)
       %td= process_task.id
       %td= process_task.assignee
       %td= process_task.candidate_users
@@ -31,9 +31,9 @@
       %td= process_task.updated_at
       %td
         - unless process_task.finished?
-          = link_to 'Finish', finish_process_engine_process_task_path(process_task), class: "btn btn-warning btn-sm", method: :put, data: {confirm: "Are you sure?"}
-        -# = link_to 'Edit', edit_process_engine_process_instance_path(process_instance), class: "btn btn-primary btn-sm"
-        -# = link_to 'Remove', process_engine_process_instance_path(process_instance), class: "btn btn-danger btn-sm", method: :delete, data: {confirm: "Are you sure?"}
+          = link_to 'Finish', finish_process_task_path(process_task), class: "btn btn-warning btn-sm", method: :put, data: {confirm: "Are you sure?"}
+        -# = link_to 'Edit', edit_process_instance_path(process_instance), class: "btn btn-primary btn-sm"
+        -# = link_to 'Remove', process_instance_path(process_instance), class: "btn btn-danger btn-sm", method: :delete, data: {confirm: "Are you sure?"}
 
 = will_paginate @process_tasks
 

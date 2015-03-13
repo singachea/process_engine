@@ -3,8 +3,6 @@ class ProcessEngine::ProcessDefinitionsController < ProcessEngine::ApplicationCo
 
   def index
     @definitions = ProcessEngine::ProcessDefinition.page(params[:page]).per_page(20)
-    # binding.pry
-    # render text: "cool"
   end
 
   def show
@@ -22,7 +20,7 @@ class ProcessEngine::ProcessDefinitionsController < ProcessEngine::ApplicationCo
         @definition.save
       end
 
-      redirect_to process_engine_process_definition_path(@definition)
+      redirect_to process_definition_path(@definition)
     else
       render :new
     end
@@ -33,7 +31,7 @@ class ProcessEngine::ProcessDefinitionsController < ProcessEngine::ApplicationCo
 
   def update
     if update_active_record_complex_type(@definition) { @definition.update definition_params }
-      redirect_to process_engine_process_definition_path(@definition)
+      redirect_to process_definition_path(@definition)
     else
       render :edit
     end
@@ -41,12 +39,12 @@ class ProcessEngine::ProcessDefinitionsController < ProcessEngine::ApplicationCo
 
   def destroy
     @definition.destroy
-    redirect_to process_engine_process_definitions_path
+    redirect_to process_definitions_path
   end
 
   def start_new_process_instance
     pi = ProcessEngine::ProcessQuery.process_instance_start(@definition.slug, "dummy")
-    redirect_to process_engine_process_instance_path(pi)
+    redirect_to process_instance_path(pi)
   end
 
   def bpmn_xml
@@ -60,6 +58,6 @@ class ProcessEngine::ProcessDefinitionsController < ProcessEngine::ApplicationCo
   end
 
   def definition_params
-    params.require(:process_engine_process_definition).permit(:name, :slug, :description, :bpmn_xml)
+    params.require(:process_definition).permit(:name, :slug, :description, :bpmn_xml)
   end
 end

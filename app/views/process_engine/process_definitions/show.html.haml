@@ -1,6 +1,6 @@
 %h2 Process Definition <em>#{@definition.name}</em>
 
-%p= link_to "Edit", edit_process_engine_process_definition_path(@definition), class: "btn btn-primary btn-sm"
+%p= link_to "Edit", edit_process_definition_path(@definition), class: "btn btn-primary btn-sm"
 
 %p
   %strong ID:
@@ -27,11 +27,11 @@
 
 %p
   %strong Process Instances:
-  = link_to 'Process Instances', process_engine_process_definition_process_instances_path(@definition), class: "btn btn-default btn-sm"
+  = link_to 'Process Instances', process_definition_process_instances_path(@definition), class: "btn btn-default btn-sm"
 
 %p
   %strong Start New Process Instance:
-  = link_to 'Start New Process Instance', start_new_process_instance_process_engine_process_definition_path(@definition), method: :post, class: "btn btn-warning btn-sm"
+  = link_to 'Start New Process Instance', start_new_process_instance_process_definition_path(@definition), method: :post, class: "btn btn-warning btn-sm"
 
 #canvas{ style: "height: 500px; padding: 0px"}
 

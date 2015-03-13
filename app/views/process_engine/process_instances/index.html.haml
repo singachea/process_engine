@@ -1,6 +1,6 @@
 %h2
   List of Process Instances of
-  = link_to @definition.name, process_engine_process_definition_path(@definition), class: "btn btn-default btn-sm"
+  = link_to @definition.name, process_definition_path(@definition), class: "btn btn-default btn-sm"
 
 %table.table.table-striped.table-bordered
   %tr
@@ -15,15 +15,15 @@
 
   - @process_instances.each do |process_instance|
     %tr
-      %td= link_to process_instance.id, process_engine_process_instance_path(process_instance)
+      %td= link_to process_instance.id, process_instance_path(process_instance)
       %td= process_instance.status
       %td= process_instance.states
       %td= process_instance.creator
-      %td= link_to 'Process Tasks', process_engine_process_instance_process_tasks_path(process_instance), class: "btn btn-default btn-sm"
+      %td= link_to 'Process Tasks', process_instance_process_tasks_path(process_instance), class: "btn btn-default btn-sm"
       %td= process_instance.created_at
       %td= process_instance.updated_at
       %td
-        = link_to 'Edit', edit_process_engine_process_instance_path(process_instance), class: "btn btn-primary btn-sm"
-        = link_to 'Remove', process_engine_process_instance_path(process_instance), class: "btn btn-danger btn-sm", method: :delete, data: {confirm: "Are you sure?"}
+        = link_to 'Edit', edit_process_instance_path(process_instance), class: "btn btn-primary btn-sm"
+        = link_to 'Remove', process_instance_path(process_instance), class: "btn btn-danger btn-sm", method: :delete, data: {confirm: "Are you sure?"}
 
 = will_paginate @process_instances
