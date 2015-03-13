@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  slug: MyString
+  starting_node: MyString
+  description: MyText
+  bpmn_xml: MyText
+  bpmn_json: 
+
+two:
+  name: MyString
+  slug: MyString
+  starting_node: MyString
+  description: MyText
+  bpmn_xml: MyText
+  bpmn_json: 
