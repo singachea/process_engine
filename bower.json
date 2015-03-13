@@ -1,0 +1,19 @@
+{
+  "name": "process_engine",
+  "version": "0.0.1",
+  "authors": [
+    "Ream <singachea@gmail.com>"
+  ],
+  "description": "bower support",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bpmn-js": "~0.8.0"
+  }
+}

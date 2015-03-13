@@ -33,7 +33,7 @@
   %strong Start New Process Instance:
   = link_to 'Start New Process Instance', start_new_process_instance_process_definition_path(@definition), method: :post, class: "btn btn-warning btn-sm"
 
-#canvas{ style: "height: 500px; padding: 0px"}
+= render 'process_engine/share/bpmn_canvas'
 
 %p
   %strong BPMN XML:
@@ -45,13 +45,6 @@
 
 
 
-%script{ src: '/assets/jquery-mousewheel/jquery.mousewheel.js' }
-%script{ src: '/assets/lodash/dist/lodash.js' }
-%script{ src: '/assets/sax/lib/sax.js' }
-%script{ src: '/assets/Snap.svg/dist/snap.svg.js' }
-%script{ src: '/assets/bpmn-js/dist/bpmn-viewer.js' }
-
-%script{ src: '/assets/bpmn.loader.js' }
 
 :javascript
   var bpmn_url = "/process_engine/process_definitions/#{@definition.id}/bpmn_xml";

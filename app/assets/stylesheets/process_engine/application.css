@@ -14,3 +14,26 @@
  *= require bootstrap
  *= require_self
  */
+
+
+ .diagram-note {
+   background-color: rgba(66, 180, 21, 0.7);
+   color: White;
+   border-radius: 5px;
+   font-family: Arial;
+   font-size: 12px;
+   padding: 5px;
+   min-height: 16px;
+   width: 50px;
+   text-align: center;
+ }
+
+ .bpmn-highlight-node:not(.djs-connection) .djs-visual > :nth-child(1) {
+   stroke: rgba(66, 180, 21, 0.7) !important; /* color elements as red */
+   fill: rgba(114, 184, 76, 0.7) !important;
+   stroke-width: 5px;
+ }
+
+ .bjs-powered-by {
+   display: none;
+ }
