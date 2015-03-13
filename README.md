@@ -134,6 +134,60 @@ end
 
 All queries should be done through `ProcessEngine::ProcessQuery`
 
+#### ProcessEngine::ProcessQuery.task_complete
+
+The signature is
+```ruby
+# available options: :finisher, :verified_state
+def task_complete(task_id, options = {})
+  # ...
+end
+```
+* `finisher`: The person who complete this task
+* `verified_state`: The state of the task to make sure that call the right corresponding task. Silence if not included
+
+
+#### ProcessEngine::ProcessQuery.task_get_all
+
+The signature is
+```ruby
+# available options: :assignee, :candidate_user, :all_candidate_users, :any_candidate_users, :all_candidate_groups, :any_candidate_groups, :user, :user_or_groups, :status
+def task_get_all(options = {})
+  # ...
+end
+```
+* `assignee`: primary assignee
+* `candidate_user`: single person in candidate users
+* `all_candidate_users`: all people must be in candidate users
+* `any_candidate_users`: anyone in candidate users
+* `all_candidate_groups`: all groups must be in candidate groups
+* `any_candidate_groups`: any group in candidate groups
+* `user`: single person who is assignee OR in candidate users
+* `user_or_groups`: single person who is assignee OR in candidate users OR any group in candidate groups. e.g. `options[:user_or_groups] = ['assignee_name', ['group1', 'group2']]`
+* `status`: status of tasks (`pending` or `finished`)
+
+
+#### ProcessEngine::ProcessQuery.task_accessible?
+
+The signature is
+```ruby
+def task_accessible?(task_id, user, groups = [])
+  # ...
+  # return boolean
+end
+```
+
+This is to check if a user which has user name as `user` or belongs to group array `groups` has access to a task id `task_id`
+
+#### ProcessEngine::ProcessQuery.process_instance_start
+The signature is
+```ruby
+# available options:
+def process_instance_start(process_defintion_slug, creator)
+  # ...
+  # return instance of ProcessEngine::ProcessInstance
+end
+```
 
 ### Consumer API
 
@@ -146,4 +200,4 @@ You can easily use ready-api in `ProcessEngine::ProcessTask#consumer_task` which
 * ~~external ref data~~
 * process_task chaining
 * closing branching besides complex gateway
-* create gem
+* ~~create gem~~

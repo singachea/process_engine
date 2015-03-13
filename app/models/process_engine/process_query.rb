@@ -1,8 +1,11 @@
 class ProcessEngine::ProcessQuery
   class << self
 
+    # available options: :finisher, :verified_state
     def task_complete(task_id, options = {})
       task = ProcessEngine::ProcessTask.find(task_id)
+      raise ProcessEngine::Error::FalseTaskState if options[:verified_state] && (task.state != options[:verified_state])
+
       task.complete(options)
     end
 
@@ -25,6 +28,14 @@ class ProcessEngine::ProcessQuery
 
       taks = taks.by_status(options[:status]) if options[:status]
       taks
+    end
+
+    def task_accessible?(task_id, user, groups = [])
+      options = {
+        user_or_groups: [user, groups]
+      }
+      
+      task_get_all(options).where(id: task_id).count > 0
     end
 
     def process_instance_start(process_defintion_slug, creator)
