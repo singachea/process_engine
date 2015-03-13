@@ -1,0 +1,26 @@
+%h2 List of Process Definitions
+
+%p= link_to 'Add new process definition', new_process_definition_path, class: "btn btn-success btn-sm"
+
+%table.table.table-striped.table-bordered
+  %tr
+    %th ID
+    %th Name
+    %th Slug
+    %th Starting Node
+    %th Process Instances
+    %th Updated
+    %th
+  - @definitions.each do |definition|
+    %tr
+      %td= definition.id
+      %td= definition.name
+      %td= link_to definition.slug, process_definition_path(definition)
+      %td= definition.starting_node
+      %td= link_to 'Process Instances', process_definition_process_instances_path(definition), class: "btn btn-default btn-sm"
+      %td= definition.updated_at
+      %td
+        = link_to 'Edit', edit_process_definition_path(definition), class: "btn btn-primary btn-sm"
+        = link_to 'Remove', process_definition_path(definition), class: "btn btn-danger btn-sm", method: :delete, data: {confirm: "Are you sure?"}
+
+= will_paginate @definitions
