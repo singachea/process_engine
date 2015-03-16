@@ -18,14 +18,13 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.2.0"
-  s.add_dependency "will_paginate"
-  s.add_dependency "haml-rails"
-  s.add_dependency "simple_form"
-  s.add_dependency "bower-rails"
-  s.add_dependency "nokogiri"
-  s.add_dependency "pg"
-  s.add_dependency "rails-assets-bootstrap"
-  s.add_dependency "jquery-rails"
+  s.add_dependency "will_paginate", "~> 3.0.7"
+  s.add_dependency "haml-rails", "~> 0.9.0"
+  s.add_dependency "simple_form", "~> 3.1.0"
+  s.add_dependency "nokogiri", "~> 1.6.6.0"
+  s.add_dependency "pg", "~> 0.18.1"
+  s.add_dependency "rails-assets-bootstrap", "~> 3.3.2"
+  s.add_dependency "jquery-rails", "~> 4.0.3"
 
   s.add_development_dependency "hirb"
   s.add_development_dependency "awesome_print"
