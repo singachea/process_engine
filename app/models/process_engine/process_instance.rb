@@ -20,6 +20,14 @@ module ProcessEngine
       self
     end
 
+    def process_tasks_by_state_name(state_name)
+      process_tasks.by_state(state_name).desc
+    end
+
+    def last_process_task_by_state_name(state_name)
+      process_tasks_by_state_name(state_name).first
+    end
+
     private
 
     def begin_process_instance

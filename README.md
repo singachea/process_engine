@@ -48,13 +48,6 @@ pdns = pd.process_definition_nodes
 
 This is the instance of a process instance and process definition node residing in `ProcessEngine::ProcessTask`. This is the place where we can query tasks of a user/assignee.
 
-To complete a task
-
-```ruby
-task = ProcessEngine::ProcessTask.last
-task.complete
-```
-
 
 
 ## Node Data Injection
@@ -145,6 +138,7 @@ end
 ```
 * `finisher`: The person who complete this task
 * `verified_state`: The state of the task to make sure that call the right corresponding task. Silence if not included
+* `data`: Hash value to save into process task's state
 
 
 #### ProcessEngine::ProcessQuery.task_get_all

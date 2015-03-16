@@ -19,16 +19,21 @@ module ProcessEngine
     scope :by_user_or_groups, -> (user, groups) { where("assignee = ? OR ? = ANY(candidate_users) OR candidate_groups && ARRAY[?]::varchar[]", user, user, groups) }
 
     scope :by_status, -> (status) { where(status: status) }
+    scope :by_state, -> (state) { where(state: state) }
 
     scope :desc, -> { order('id desc') }
     scope :asc, -> { order('id asc') }
 
 
-    # available options [:finisher]
+    # available options :finisher, :data
     def complete(options)
       injected_data = ProcessEngine::NodeDataInjection.node_options_data(process_instance.process_definition.slug, state, self)
       process_instance.move_to_next_state(state, injected_data)
-      update!(finisher: options[:finisher], status: :finished)
+
+      opt = { finisher: options[:finisher], status: :finished }
+      opt[:data] = options[:data] if options[:data].present?
+
+      update!(opt)
 
       # enable service hooks
       node_ext = process_instance.process_definition.schema.node(state).node_extension

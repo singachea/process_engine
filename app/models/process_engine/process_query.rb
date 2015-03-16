@@ -1,7 +1,7 @@
 class ProcessEngine::ProcessQuery
   class << self
 
-    # available options: :finisher, :verified_state
+    # available options: :finisher, :verified_state, :data
     def task_complete(task_id, options = {})
       task = ProcessEngine::ProcessTask.find(task_id)
       raise ProcessEngine::Error::FalseTaskState if options[:verified_state] && (task.state != options[:verified_state])
@@ -34,7 +34,7 @@ class ProcessEngine::ProcessQuery
       options = {
         user_or_groups: [user, groups]
       }
-      
+
       task_get_all(options).where(id: task_id).count > 0
     end
 
