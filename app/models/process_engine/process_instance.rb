@@ -4,12 +4,10 @@ module ProcessEngine
 
     belongs_to :process_definition
     has_many :process_tasks, dependent: :destroy
-    # has_many :process_definition_nodes, through: :process_definition
 
     scope :desc, -> { order('id desc') }
     scope :asc, -> { order('id asc') }
 
-    # options includes ({:exclusive_gateway_choice_value})
     def move_to_next_state(pdn_slug_state, options = {})
       move_to_next_cur_state(pdn_slug_state, [], options)
     end
@@ -38,13 +36,9 @@ module ProcessEngine
       current_node = process_definition.schema.node(cur_state)
       schedulable_nodes = current_node.next_schedulable_nodes(options)
 
-      case schedulable_nodes.count
-      when 0
+      if schedulable_nodes.count == 0
         update!(status: :finished, states: [cur_state]) # finish life cycle
-      # when 1
-      #   execute_single_next_movable_nodes(cur_state, previous_states, schedulable_nodes.first)
       else
-        # more than one branching node ---> parallel tasks
         schedulable_nodes.each do |sn|
           execute_single_next_movable_nodes(cur_state, previous_states, sn)
         end
@@ -58,7 +52,6 @@ module ProcessEngine
 
       # check if node can be computed (e.g. script task, or branching node)
       if ProcessEngine::Schema::Node::COMPUTED_NODE_TYPES.include?(node.node_type)
-        # injected_data = ProcessEngine::NodeDataInjection.node_options_data(process_definition.slug, new_state, self)
         move_to_next_cur_state(new_state, previous_states + [cur_state], injected_data)
 
       elsif node.node_type == ProcessEngine::Schema::Node::NodeType::COMPLEX_GATEWAY
@@ -67,7 +60,6 @@ module ProcessEngine
           update!(states: (states | [new_state]) - ([cur_state] | previous_states))
         else
           # one state has already been reached, and we just need to move forward
-          # injected_data = ProcessEngine::NodeDataInjection.node_options_data(process_definition.slug, new_state, self)
           move_to_next_cur_state(new_state, previous_states + [cur_state], injected_data)
         end
       else

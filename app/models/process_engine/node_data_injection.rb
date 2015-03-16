@@ -11,4 +11,12 @@ class ProcessEngine::NodeDataInjection
     result = selected_class.forward_implementation_method(node_id, source_object)
     result.instance_of?(Hash) ? result : {}
   end
+
+  def self.implementation_check
+    (injected_classes || []).each do |icl|
+      methods = %i(process_definition_slug implemented_node_ids forward_implementation_method).each do |method|
+        fail "You need to implement class method `#{method.to_s}` in #{icl}" unless icl.respond_to?(method)
+      end
+    end
+  end
 end

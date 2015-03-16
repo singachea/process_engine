@@ -4,11 +4,26 @@ The goal is to design a simple engine in such a way that it can plugged and play
 
 ## Setup
 ### Requirements
-* postgres 9.4 or above
+* postgres 9.4 or above because it requires jsonb datatype.
 
-### Seeding
+## Modeler
+
+Please download http://camunda.org/bpmn/tool/ to create the BPMN model.
+
+### Modeler exclusive gateway
+If you want to define gateway, in modeler, click on exclusive gateway node and go to `Properties` > `Extensions` > add key/value to define your desired flows.
+
+### Modeler node service hooks
+You can define service hook by add the attribute of `Properties` > `Listeners` > `Execution Listeners` or `Task Listeners`. Currently, we only support `Class` method of invoking
+
+### Modeler data injection
+You can inject data at each node by referring to its ID. See example below:
+
+## DB schema migration
+To setup, you need to migrate the schema
+
 ```bash
-rake db:seed
+bundle exec rake process_engine:install:migrations
 ```
 
 
@@ -56,17 +71,17 @@ Each node can have properties to define branching and other metas. For example:
 To inject data at branching node, add implementation to `app/node_data_injection/`.
 
 ```ruby
-# file: /app/process_engine_hooks/branching_node_implementation_example.rb
-class BranchingNodeImplementationExample
+# file: /app/process_hooks/appointment_hook.rb
+class AppointmentHook
   class << self
     # [required] to distinguish the namespace
     def process_definition_slug
-      "leave_approval"
+      "tuansing"
     end
 
     # [required] to tell what to implement
     def implemented_node_ids
-      [:decision] # string also ok
+      [:process_appointment, :handover_gateway]
     end
 
     # [required] to forward the implementation
@@ -76,19 +91,17 @@ class BranchingNodeImplementationExample
       send("implement_#{node_id}", source_object)
     end
 
-    def implement_decision(process_instance_object)
+    def implement_process_appointment(process_instance_object)
+      # { assignee: "random_assignee", candidate_users: ["chea", "lim"], candidate_groups: ["sale", "marketing"] } # return this node option here
+      { assignee: "reamream"}
+    end
 
-      # execute script task is here
-      execute_script_task(process_instance_object)
-
-      # currently don't need to use process_instance_object object
-      value = ["branch1", "branch2"].sample
+    def implement_handover_gateway(process_instance_object)
+      task = process_instance_object.last_process_task_by_state_name("process_appointment")
+      value = task.data["handover_gateway_choice"] || ["cancel", "submit"].sample
       { exclusive_gateway_choice_value: value } # return this node option here
     end
 
-    def execute_script_task(process_instance_object)
-      puts 'cooooooool'
-    end
   end
 end
 ```
@@ -97,9 +110,27 @@ To load this class, we need to include in initializer:
 
 ```ruby
 # file: /config/initializers/data_injection_loader.rb
-ProcessEngine::NodeDataInjection.injected_classes = [BranchingNodeImplementationExample]
+ProcessEngine::NodeDataInjection.injected_classes = [AppointmentHook]
 ```
 
+For development you can inject this in `application.rb`
+```ruby
+# file: /config/application.rb
+#### blah blah
+module AppNameHere
+  class Application < Rails::Application
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration should go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded.
+
+    config.to_prepare do
+      ProcessEngine::NodeDataInjection.injected_classes = [AppointmentHook]
+    end
+
+  end
+end
+
+```
 
 
 ### Service Hook
